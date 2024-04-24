@@ -1,7 +1,7 @@
 import './App.css';
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
-import tictactoe from './Components/TicTacToe/tictactoe';
-import home from './Components/Home/home'
+import Tictactoe from './Components/TicTacToe/tictactoe';
+import Home from './Components/Home/home'
 
 function App() {
   return (
@@ -11,12 +11,12 @@ function App() {
         <Routes>
           <Route
             exact
-            path="/"
-            element={<home/>}
+            path="/react-portfolio/"
+            element={<Home />}
           />
           <Route
-            path="/tictactoe"
-            element={<tictactoe/>}
+            path="/react-portfolio/tictactoe"
+            element={<Tictactoe />}
           />
         </Routes>
       </Router>
