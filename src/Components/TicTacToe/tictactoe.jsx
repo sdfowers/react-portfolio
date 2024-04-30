@@ -1,89 +1,105 @@
 import React, { useRef, useState } from 'react'
 import './Tictactoe.css'
-import circle_icon from '../Assets/Tictactoe/circle.png'
-import cross_icon from '../Assets/Tictactoe/cross.png'
-
-let data = ["", "", "", "", "", "", "", "", ""]
 
 const Tictactoe = () => {
-
-    let [count, setCount] = useState(0);
-    let [lock, setLock] = useState(false);
-    let [imgIcon, imgIconSet] = useState(null);
-    let winnerRef = useRef(null);
-
-    const toggle = (e, num) => {
-        if (lock == true) {
-            return 0;
-        }
-        if (count%2 === 0) {
-            //e.target.innerHTML = `<img src='${cross_icon}'>`;
-            imgIconSet(cross_icon);
-            data[num] = "x";
-            setCount(++count);
-        } else {
-            //e.target=innerHTML = `<img src='${circle_icon}'>`;
-            imgIconSet(circle_icon);
-            data[num] = "o";
-            setCount(++count);
-        }
-        checkWin();
-    }
-
-    const checkWin = () => {
-        //horizontal check
-        for(let i = 0; i < 7; i += 3) {
-            if(data[0 + i] === data[1 + i] && data[1 + i] === data[2 + i] && data[2 + i] !== "") {
-                won(data[2 + i]);
-            }
-        }
-        //vertical check
-        for(let i = 0; i < 3; i++) {
-            if(data[0 + i] === data[3 + i] && data[3 + i] === data[6 + i] && data[6 + i] !== "") {
-                won(data[6 + i]);
-            }
-        }
-        //diagonal check
-        if(data[0] === data[4] && data[4] == data[8] && data[8] !== "") {
-            won(data[8]);
-        }
-        if(data[3] === data[4] && data[4] == data[8] && data[6] !== "") {
-            won(data[6]);
-        }
-    }
-
-    const won = (winner) => {
-        setLock(true);
-        if(winner === "x") {
-            //winnerRef.current.innerHTML = `Congratulations: <img src=${cross_icon}>`
-        } else {
-            //winnerRef.current.innerHTML = `Congratulations: <img src=${circle_icon}>`
-        }
-    }
-
   return (
     <div className='container'>
         <h1 className="title">Tic Tac Toe Game in <span>React</span></h1>
-        <div className="board">
-            <div className="row1">
-                <div className="boxes" onClick={(e)=>{toggle(e, 0)}}><img src={imgIcon}/></div>
-                <div className="boxes" onClick={(e)=>{toggle(e, 1)}}><img src={imgIcon}/></div>
-                <div className="boxes" onClick={(e)=>{toggle(e, 2)}}><img src={imgIcon}/></div>
-            </div>
-            <div className="row2">
-                <div className="boxes" onClick={(e)=>{toggle(e, 3)}}></div>
-                <div className="boxes" onClick={(e)=>{toggle(e, 4)}}></div>
-                <div className="boxes" onClick={(e)=>{toggle(e, 5)}}></div>
-            </div>
-            <div className="row3">
-                <div className="boxes" onClick={(e)=>{toggle(e, 6)}}></div>
-                <div className="boxes" onClick={(e)=>{toggle(e, 7)}}></div>
-                <div className="boxes" onClick={(e)=>{toggle(e, 8)}}></div>
-            </div>
-        </div>
-        <button className="reset">Reset</button>
+        <Board></Board>
     </div>
   )
+}
+
+//Each square of the tictactoe board
+function Square({value, onClick}) {
+    return (
+        <button className='square' onClick={onClick}>
+            {value}
+        </button>
+    )
+}
+
+//Tictactoe board and logic
+function Board({}) {
+    //array of X or O (Default null value)
+    const [squares, setSquares] = useState(Array(9).fill(null))
+    const [isX, setIsX] = useState(true)
+
+    //On square click check for winner (return if found)
+    //set squares to current isX value and change isX value
+    const handleClick = (i) => {
+        if (CalculateWinner(squares) || squares[i]) {
+            return
+        }
+        squares[i] = isX ? 'X' : 'O'
+        setSquares(squares)
+        setIsX(!isX)
+    }
+
+    const winner = CalculateWinner(squares)
+    let status
+
+    if(winner) {
+        status = `Winner: ${winner}`
+    } else {
+        status = `Next player: ${isX ? 'X' : 'O'}`
+    }
+
+    //Reset board starting values
+    const resetBoard = () => {
+        setIsX(true)
+        setSquares(Array(9).fill(null))
+    }
+
+    return (
+        <div container>
+            <div className="board">
+                <div className="board-row">
+                    <Square value={squares[0]} onClick={() => handleClick(0)}></Square>
+                    <Square value={squares[1]} onClick={() => handleClick(1)}></Square>
+                    <Square value={squares[2]} onClick={() => handleClick(2)}></Square>
+                </div>
+                <div className="board-row">
+                    <Square value={squares[3]} onClick={() => handleClick(3)}></Square>
+                    <Square value={squares[4]} onClick={() => handleClick(4)}></Square>
+                    <Square value={squares[5]} onClick={() => handleClick(5)}></Square>
+                </div>
+                <div className="board-row">
+                    <Square value={squares[6]} onClick={() => handleClick(6)}></Square>
+                    <Square value={squares[7]} onClick={() => handleClick(7)}></Square>
+                    <Square value={squares[8]} onClick={() => handleClick(8)}></Square>
+                </div>
+                
+            </div>
+            <div className="status">{status}</div>
+            <button className="reset" onClick={(resetBoard)}>Reset Board</button>
+        </div>
+    )
+}
+
+//Calculate the winner by checking current board value against all possible winning outcomes
+//If a winner is found return with winning value else return null
+function CalculateWinner(squares) {
+    const winningPatterns = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
+
+    for (let i = 0; i < winningPatterns.length; i++) {
+        const [a, b, c] = winningPatterns[i]
+
+        if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a]
+        }
+    }
+
+    return null
 }
 
 export default Tictactoe
