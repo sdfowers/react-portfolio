@@ -9,6 +9,7 @@ const Home = () => {
 			<div className="link-list">
 					<Link className="link" to="/react-portfolio/">Home</Link>
 					<Link className="link" to="/react-portfolio/tictactoe">TicTacToe</Link>
+					<Link className="link" to="/react-portfolio/fooddelivery">Food Delivery</Link>
 			</div>
     	</div>
   )
