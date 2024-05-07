@@ -21,6 +21,9 @@
     align-items: start;
     justify-content: left;
 }
+.footer-content-left p, .footer-content-center h2, .footer-content-right h2 {
+    padding-bottom: 5px;
+}
 .footer-content-center ul, .footer-content-right ul{
     margin: 0px;
     padding: 0px;
@@ -37,8 +40,14 @@
 .footer-content-center h2, .footer-content-right h2{
     color: white;
 }
+.footer-social-icons {
+    overflow: hidden;
+}
 .footer-social-icons img{
-    width: 40px;
+    width: 50px;
+    height: 50px;
+    padding: auto;
+    margin: auto;
     margin-right: 15px;
     cursor: pointer;
     transition: 1s;
