@@ -32,7 +32,7 @@ function App() {
 					element={<Cart />}
 				/>
 				<Route
-					path='/react-portfolio/placeorder'
+					path='/react-portfolio/order'
 					element={<PlaceOrder />}
 				/>
 			</Routes>

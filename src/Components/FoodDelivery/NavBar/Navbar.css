@@ -19,6 +19,12 @@
 .navbar-menu li {
     cursor: pointer;
 }
+.navbar-menu Link, .navbar-menu a {
+    transition: 0.3s;
+}
+.navbar-menu Link:hover, .navbar-menu a:hover {
+    color: tomato;
+}
 .navbar-right {
     display: flex;
     align-items: center;
@@ -42,10 +48,10 @@
     padding-bottom: 2px;
     border-bottom: 2px solid #49557e;
 }
-.navbar-search-icon {
+.navbar-cart-icon {
     position: relative;
 }
-.navbar-search-icon .dot {
+.navbar-cart-icon .dot {
     position: absolute;
     min-width: 10px;
     min-height: 10px;
